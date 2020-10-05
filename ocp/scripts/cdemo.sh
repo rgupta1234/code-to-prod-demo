@@ -48,25 +48,25 @@ oc -n reversewords-ci create -f lint-task.yaml
 oc -n reversewords-ci create -f test-task.yaml
 oc -n reversewords-ci create -f build-task.yaml
 oc -n reversewords-ci create -f image-updater-task.yaml
-sed -i "s|<reversewords_git_repo>|https://github.com/rgupta1234/reverse-words|" build-pipeline.yaml
-sed -i "s|<reversewords_quay_repo>|quay.io/rgupta1234/tekton-reversewords|" build-pipeline.yaml
-sed -i "s|<golang_package>|github.com/rgupta1234/reverse-words|" build-pipeline.yaml
-sed -i "s|<imageBuilder_sourcerepo>|rgupta1234/reverse-words-cicd|" build-pipeline.yaml
+gsed -i "s|<reversewords_git_repo>|https://github.com/rgupta1234/reverse-words|" build-pipeline.yaml
+gsed -i "s|<reversewords_quay_repo>|quay.io/rgupta1234/tekton-reversewords|" build-pipeline.yaml
+gsed -i "s|<golang_package>|github.com/rgupta1234/reverse-words|" build-pipeline.yaml
+gsed -i "s|<imageBuilder_sourcerepo>|rgupta1234/reverse-words-cicd|" build-pipeline.yaml
 oc -n reversewords-ci create -f build-pipeline.yaml
 oc -n reversewords-ci create -f webhook-roles.yaml
 oc -n reversewords-ci create -f github-triggerbinding.yaml
 WEBHOOK_SECRET="v3r1s3cur3"
 oc -n reversewords-ci create secret generic webhook-secret --from-literal=secret=${WEBHOOK_SECRET}
-sed -i "s/<git-triggerbinding>/github-triggerbinding/" webhook.yaml
-sed -i "/ref: github-triggerbinding/d" webhook.yaml
-sed -i "s/- name: pipeline-binding/- name: github-triggerbinding/" webhook.yaml
+gsed -i "s/<git-triggerbinding>/github-triggerbinding/" webhook.yaml
+gsed -i "/ref: github-triggerbinding/d" webhook.yaml
+gsed -i "s/- name: pipeline-binding/- name: github-triggerbinding/" webhook.yaml
 oc -n reversewords-ci create -f webhook.yaml
 oc -n reversewords-ci create -f curl-task.yaml
 oc -n reversewords-ci create -f get-stage-release-task.yaml
-sed -i "s|<reversewords_cicd_git_repo>|https://github.com/rgupta1234/reverse-words-cicd|" promote-to-prod-pipeline.yaml
-sed -i "s|<reversewords_quay_repo>|quay.io/rgupta1234/tekton-reversewords|" promote-to-prod-pipeline.yaml
-sed -i "s|<imageBuilder_sourcerepo>|rgupta1234/reverse-words-cicd|" promote-to-prod-pipeline.yaml
-sed -i "s|<stage_deployment_file_path>|./deployment.yaml|" promote-to-prod-pipeline.yaml
+gsed -i "s|<reversewords_cicd_git_repo>|https://github.com/rgupta1234/reverse-words-cicd|" promote-to-prod-pipeline.yaml
+gsed -i "s|<reversewords_quay_repo>|quay.io/rgupta1234/tekton-reversewords|" promote-to-prod-pipeline.yaml
+gsed -i "s|<imageBuilder_sourcerepo>|rgupta1234/reverse-words-cicd|" promote-to-prod-pipeline.yaml
+gsed -i "s|<stage_deployment_file_path>|./deployment.yaml|" promote-to-prod-pipeline.yaml
 oc -n reversewords-ci create -f promote-to-prod-pipeline.yaml
 oc -n reversewords-ci create route edge reversewords-webhook --service=el-reversewords-webhook --port=8080 --insecure-policy=Redirect
 sleep 15
