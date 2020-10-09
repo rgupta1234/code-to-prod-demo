@@ -39,8 +39,8 @@ git checkout ci
 sleep 10
 echo "Create Tekton resources for the demo"
 oc create namespace reversewords-ci
-sed -i "s/<username>/$QUAY_USER/" quay-credentials.yaml
-sed -i "s/<password>/$QUAY_PASSWORD/" quay-credentials.yaml
+gsed -i "s/<username>/$QUAY_USER/" quay-credentials.yaml
+gsed -i "s/<password>/$QUAY_PASSWORD/" quay-credentials.yaml
 oc -n reversewords-ci create secret generic image-updater-secret --from-literal=token=${GIT_AUTH_TOKEN}
 oc -n reversewords-ci create -f quay-credentials.yaml
 oc -n reversewords-ci create -f pipeline-sa.yaml
@@ -49,7 +49,7 @@ oc -n reversewords-ci create -f test-task.yaml
 oc -n reversewords-ci create -f build-task.yaml
 oc -n reversewords-ci create -f image-updater-task.yaml
 gsed -i "s|<reversewords_git_repo>|https://github.com/rgupta1234/reverse-words|" build-pipeline.yaml
-gsed -i "s|<reversewords_quay_repo>|quay.io/rgupta1234/tekton-reversewords|" build-pipeline.yaml
+gsed -i "s|<reversewords_quay_repo>|quay.io/rgupta/tekton-reversewords|" build-pipeline.yaml
 gsed -i "s|<golang_package>|github.com/rgupta1234/reverse-words|" build-pipeline.yaml
 gsed -i "s|<imageBuilder_sourcerepo>|rgupta1234/reverse-words-cicd|" build-pipeline.yaml
 oc -n reversewords-ci create -f build-pipeline.yaml
